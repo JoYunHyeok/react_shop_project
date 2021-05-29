@@ -4,12 +4,14 @@ import './App.css';
 import { useState } from 'react';
 import Data from './data.js';
 import Detail from './Detail.js'
+import axios from 'axios';
 
 import { Link, Route, Switch } from 'react-router-dom';
 
 function App() {
 
   let [shoes, shoes변경] = useState(Data);
+  let [재고, 재고변경] = useState([10, 11, 12]);
 
   return (
     <div className="App">
@@ -19,8 +21,8 @@ function App() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
-            <Nav.Link><Link to="/">Home</Link></Nav.Link>
-            <Nav.Link><Link to="/detail">Detail</Link></Nav.Link>
+            <Nav.Link as ={Link} to="/">Home</Nav.Link>
+            <Nav.Link as ={Link} to="/detail">Detail</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -54,11 +56,26 @@ function App() {
                 })
               }
             </div>
+
+            <button className="btn btn-primary" onClick={()=>{
+              
+              axios.post('서버URL', {id : 'codingapple', pw : 1234})
+
+              //axios를 쓰면 json을 object로 자동으로 바꿔준다.
+              axios.get('https://codingapple1.github.io/shop/data2.json')
+              .then((result)=>{
+                console.log(result.data) //성공한 경우
+                shoes변경([...shoes, ...result.data])
+              })
+              .catch(()=>{
+                console.log("실패했어요") // 실패한 경우
+              })
+            }}>더보기</button>
           </div>
         </Route>
 
         <Route path="/detail/:id">
-          <Detail shoes={shoes} ></Detail>
+          <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} ></Detail>
         </Route>
 
         <Route path="/:id">
@@ -71,9 +88,7 @@ function App() {
     </div>
   )
 }
-
-
-
+ 
 function Card(props) {
   return (
     <div className="col-md-4">
