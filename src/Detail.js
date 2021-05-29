@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import {재고context} from './App.js';
 // import './Detail.scss';
 
 // let 박스 = styled.div`
@@ -15,6 +16,7 @@ import styled from 'styled-components';
 function Detail(props) {
     let [alert, alert변경] = useState(true); //현재 alert창을 저장하는 플래그
     let [inputData, inputData변경] = useState('');
+    let 재고 = useContext(재고context);
 
     useEffect(()=>{
       let 타이머 = setTimeout(()=>{alert변경(false)}, 2000);

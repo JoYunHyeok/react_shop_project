@@ -1,12 +1,17 @@
 import logo from './logo.svg';
 import { Navbar, Nav, NavDropdown, Button, Jumbotron } from 'react-bootstrap';
 import './App.css';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Data from './data.js';
 import Detail from './Detail.js'
 import axios from 'axios';
-
 import { Link, Route, Switch } from 'react-router-dom';
+
+// context만들기
+// 1. React.createContext() 만들기 => 범위를 생성해주는 문법
+// 2. 재고context.Provider value={재고}
+// 3. useContext()로 공유된 값 사용하기
+export let 재고context = React.createContext(); //Detail.js에서 쓰고 싶을땐 export를 앞에 붙여주고 Detail.js에서 import해야한다.
 
 function App() {
 
@@ -49,13 +54,19 @@ function App() {
           </Jumbotron>
 
           <div className="container">
+
+            <재고context.Provider value={재고}>
+
             <div className="row">
+
               {
                 shoes.map((a, i) => {
                   return <Card shoes={shoes[i]} i={i} />
                 })
               }
             </div>
+
+            </재고context.Provider>
 
             <button className="btn btn-primary" onClick={()=>{
               
@@ -75,7 +86,9 @@ function App() {
         </Route>
 
         <Route path="/detail/:id">
-          <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} ></Detail>
+          <재고context.Provider value={재고}>
+            <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} ></Detail>
+          </재고context.Provider>
         </Route>
 
         <Route path="/:id">
@@ -95,9 +108,14 @@ function Card(props) {
       <img src={'https://codingapple1.github.io/shop/shoes' + (props.i + 1) + '.jpg'} width="100%" />
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.content} & {props.shoes.price}</p>
+      <Test></Test>
     </div>
   )
 }
 
+function Test(){
+  let 재고 = useContext(재고context);
+  return <p>{재고[0]}</p>
+}
 
 export default App;
