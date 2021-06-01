@@ -6,6 +6,7 @@ import Data from './data.js';
 import Detail from './Detail.js'
 import axios from 'axios';
 import { Link, Route, Switch } from 'react-router-dom';
+import Cart from './Cart.js'; // export default 된거 가져오기
 
 // context만들기
 // 1. React.createContext() 만들기 => 범위를 생성해주는 문법
@@ -90,11 +91,15 @@ function App() {
             <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} ></Detail>
           </재고context.Provider>
         </Route>
+        
+        <Route path="/cart">
+          <Cart></Cart>
+        </Route>
 
         <Route path="/:id">
           <div>아무거나</div>
         </Route>
-
+        
       </Switch>
 
 
