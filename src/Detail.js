@@ -5,7 +5,7 @@ import {재고context} from './App.js';
 import { Navbar, Nav, NavDropdown, Button, Jumbotron } from 'react-bootstrap';
 // import './Detail.scss';
 import {CSSTransition} from "react-transition-group"; // 컴포넌트 등장/ 업데이트시 transition 쉽게쉽게 줄 수 있음
-
+import {connect} from 'react-redux';
 // import './Detail.scss';
 
 // let 박스 = styled.div`
@@ -67,6 +67,8 @@ function Detail(props) {
               <Info 재고={props.재고}></Info>
               <button className="btn btn-danger" onClick={()=>{
                 props.재고변경([9, 11, 12])
+                props.dispatch({ type : '항목추가', payload : {id:2, name:'새로운상품',quan:1} });
+                history.push('/cart')
               }}>주문하기</button> 
             </div>
           </div>
@@ -112,4 +114,12 @@ function Info(props){
   )
 }
 
-export default Detail;
+function state를props화(state){
+  console.log(state);
+  return {
+    state : state.reducer,
+    alert열렸니 : state.reducer2 //true
+  }
+}
+
+export default connect(state를props화)(Detail); //connect도 import해야한다.
